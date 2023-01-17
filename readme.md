@@ -46,7 +46,9 @@ We click on the Sign Up button with empty form, and then required texts as a lis
  
 ### User is able to fill out the form, clicks on the Sign Up button, Sign up button has loading icon, and Home button has URL with "/user/confirmation?email="
 
-We use origin() method has the URL 
+We use origin() method as the URL is changed from the intial cy.visit.
+
+Currently this is resulting in a 409 error, conflict as user already exists need to figure out way to make test dynamic. After running this test for the first time I would execute a clean up method that Deletes the user from our database.
 
 ``` js
  cy.origin('https://onboarding.pm61data.cloud/user/register', () =>{
@@ -77,5 +79,77 @@ We use origin() method has the URL
            })
 ```
  
- 
- 
+## Test Case 3
+
+### Navigating to '/promethium-data-connectors' and under the database validate 17 images should appear. Verify that texts include Micosoft SQL Server, MySQL, POstgreSQL, and TeraData
+
+After Navigating to the Data-Connectors, we validate the url.
+
+The database div has about 35 elements, 17 for images and 17 for the assoicated text, and the 35th is the database title. I created a selectors that only selects the 17 images on the left as a list.
+
+We loop through all of the img tags and make sure they have src attribute. I also created a fixture for further validation. In `fixtures/example.json` I have an array of logo with the file extension. So as we are looping through element we are validating the src attribute includes the following file. After looping through all of the files we make sure the list length is 17. If the list > 17 then it have failed in the loop section as our data.database is 17, and $el would have been > 17.
+
+At the bottom of the it function we validate the Micosoft SQL Server, MySQL, POstgreSQL, and TeraData.
+``` js
+ it("Validate Images for /promethium-data-connectors",()=>{
+
+       
+        //cy.get("#comp-jwtopy710").focus();
+        homepage.productDropdown.click()
+
+        cy.url().should('contain', '/promethium-data-connectors');
+            
+        // 17 images 
+
+        dataConnectors.databaseImages.each(($el, index, list)=>{
+            
+            cy.wrap($el)
+            .should('have.attr', 'src')
+            .should('include', data.database[index])
+         }).then((list)=>{
+            expect(list).to.have.length(17)  
+        })
+
+        // two ways to validate loop through all texts and check
+        // or check each individually
+        
+
+        dataConnectors.microsoftSQLServerText.should('have.text', 'Microsoft SQL Server');
+        dataConnectors.sqlText.should('have.text', 'MySQL');
+        dataConnectors.postgreSQLText.should('have.text', 'PostgreSQL');
+        dataConnectors.teradataText.should('have.text', 'Teradata');
+    })
+
+``` 
+
+## Test Case 4
+
+### Download PDF file, validate number of pages and text
+
+Here is code that downloads and verifies the download. The downloadFile is not part of cypress but coming from an external npm package "cypress-downloadfile", after installing we have to add it to our custom commands and also our cypress.config.js as this `on('task', {downloadFile})`
+
+
+    it("Download PDF file",()=>{
+        homepage.ResourcesDropdown.click();
+        //resourcePage.solutiondbtDownload.click();
+
+        cy.get('#comp-khxrjo87__item-l4epj00h > a').invoke('attr', 'href').then((href)=>{
+            cy.downloadFile(href,'cypress/downloads', 'solutiondbt.pdf')
+        })
+
+        //verifies pdf has been downloaded 
+        // todo need to add trashAssetsBeforeRun to keep downloads folder clean
+        cy.readFile('cypress/downloads/solutiondbt.pdf');
+
+        //cy.task('readPdf', 'cypress/downloads/solutiondbt.pdf').should('contain', 'Reimagining data analytics');
+    
+    })
+
+
+    it.skip("Read PDF file",()=>{
+
+        cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
+    }
+    
+    
+As for Validating the content and number of pages in the PDF,
