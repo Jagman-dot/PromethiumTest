@@ -39,10 +39,18 @@ describe("Test Case 4", ()=>{
 
 
     it.only("Read PDF file",()=>{
-
-        //cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
-        cy.pdfReader();
+        // cy.pdfReader().then(data =>{
+        //     cy.log(data)
+        // })
         
+
+        cy.task('pdf', 'cypress/downloads/Solutiondbt.pdf').then((content) => {
+        expect(content.numpages).to.eq(4)
+        expect(content.text).to.contain('Reimagining data analytics')
+        .and.to.contain('Why Promethium + dbt')
+        .and.to.contain('From Traditional to Modern In Days, Not Years')
+        .and.to.contain('Learn more, try for yourself, visit promethium.ai')
+        })
 
     })
  

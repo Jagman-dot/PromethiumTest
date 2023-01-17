@@ -1,43 +1,21 @@
 const { defineConfig } = require('cypress')
 const {downloadFile} = require('cypress-downloadfile/lib/addPlugin')
 const fs = require("fs");
-const path = require('path');
 const pdf = require('pdf-parse');
 
-
-
+const pdfReader = async (pdfLocation) => {
+  const pdfPathname = pdfLocation
+  let dataBuffer = fs.readFileSync(pdfPathname);
+  return await pdf(dataBuffer)
+}
 module.exports = defineConfig({
   // setupNodeEvents can be defined in either
   // the e2e or component configuration
   e2e: {
     setupNodeEvents(on, config) {      
-         on('task', {downloadFile})
-         on('task', {
-          pdf({pathToPdf}){
-
-            const pdfPath = path.resolve(pathToPdf)
-            let dataBuffer = fs.readFileSync(pdfPath);
-
-            pdf(dataBuffer).then(function(data) {
-            
-              // number of pages
-              console.log(data.numpages);
-              // number of rendered pages
-              console.log(data.numrender);
-              // PDF info
-              console.log(data.info);
-              // PDF metadata
-              console.log(data.metadata); 
-              // PDF.js version
-              // check https://mozilla.github.io/pdf.js/getting_started/
-              console.log(data.version);
-              // PDF text
-              console.log(data.text); 
-                    
-            });
-          
-          }
-         })
+         on('task', {downloadFile, pdf(pdfName){
+          return pdfReader(pdfName)
+         }})
       
       },
       
