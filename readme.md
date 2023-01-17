@@ -156,7 +156,7 @@ Here is code that downloads and verifies the download. The downloadFile is not p
     
 ```    
     
-As for Validating the content and number of pages in the PDF, I found a npm package that can help with this `pdf-parse`. I added a custom command pdfReader which executes test.js file with reading pdf functionality leveraged from pdf-parse. cy.exec yields results and in results.stdout is where we have pdf realted information ex: number of pages, and text from the pdf. We are able to log this in cypress window. However, when asserting using epxect or cy().should we are getting undefined.
+As for Validating the content and number of pages in the PDF, I found a npm package that can help with this `pdf-parse`. I added a custom command pdfReader which executes `test.js` file with reading pdf functionality leveraged from pdf-parse. cy.exec yields results and in results.stdout is where we have pdf realted information ex: number of pages, and text from the pdf. We are able to log this in cypress window. However, when asserting using epxect or cy().should we are getting undefined.
 
 ``` js
 Cypress.Commands.add('pdfReader', () =>{
