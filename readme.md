@@ -128,7 +128,7 @@ At the bottom of the it function we validate the Micosoft SQL Server, MySQL, POs
 
 Here is code that downloads and verifies the download. The downloadFile is not part of cypress but coming from an external npm package "cypress-downloadfile", after installing we have to add it to our custom commands and also our cypress.config.js as this `on('task', {downloadFile})`
 
-
+``` js
     it("Download PDF file",()=>{
         homepage.ResourcesDropdown.click();
         //resourcePage.solutiondbtDownload.click();
@@ -146,65 +146,23 @@ Here is code that downloads and verifies the download. The downloadFile is not p
     })
 
 
-    it.skip("Read PDF file",()=>{
+    it("Read PDF file",()=>{
 
-        cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
-    }
+        //cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
+        cy.pdfReader();
+        
+
+    })
     
+```    
     
-As for Validating the content and number of pages in the PDF, I found a npm package that can help with this `pdf-parse` when executing this in insolation it works perfectly, Here is the code:
+As for Validating the content and number of pages in the PDF, I found a npm package that can help with this `pdf-parse`. I added a custom command pdfReader which executes `test.js` file with reading pdf functionality leveraged from pdf-parse. cy.exec yields results and in results.stdout is where we have pdf realted information ex: number of pages, and text from the pdf. We are able to log this in cypress window. However, when asserting using epxect or cy().should we are getting undefined.
 
 ``` js
-const fs = require('fs');
-const pdf = require('pdf-parse');
+Cypress.Commands.add('pdfReader', () =>{
 
-
-let dataBuffer = fs.readFileSync('/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf');
-
-pdf(dataBuffer).then(function(data) {
-
-	// number of pages
-	console.log(data.numpages);
-
-	// PDF info
-	console.log(data.info);
-	// PDF metadata
-	console.log(data.metadata); 
-  	// PDF text
-	console.log(data.text); 
-        
-}); 
+    let data;
+    cy.exec('node test.js').then((result)=>{
+       return result.stdout;
+    })
 ```
-
-output: 
-```
-➜  promethium git:(master) ✗ node test.js
-Number of Pages 4
-{
-  PDFFormatVersion: '1.4',
-  IsAcroFormPresent: false,
-  IsXFAPresent: false,
-  Producer: 'macOS Version 12.0.1 (Build 21A559) Quartz PDFContext',
-  CreationDate: "D:20220426163120Z00'00'",
-  ModDate: "D:20220426163120Z00'00'"
-}
-null
-
-
-Solution for dbt™
-Why Promethium + dbt
-Work with dbtCloud
-™
-and dbtCore
-™
-without 
-coding
-One UI + automation to 
-discover, transform, 
-validate data
-Use dbtwith enterprise-
-wide data without 
-```
-
-I took that isolated function and it to config file, but during execution im seeing an error:
-The "path" argument must be of type string. Received undefined

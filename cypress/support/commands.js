@@ -5,15 +5,13 @@ require('cypress-downloadfile/lib/downloadFileCommand')
 
 
 Cypress.Commands.add('pdfReader', () =>{
-
-    let data;
+    let data = {};
     cy.exec('node test.js').then((result)=>{
-       return result.stdout;
+        data = Object.assign({},result.stdout);
+        cy.log(result.stdout)
+        
     })
-   
-
-  
-
+    console.log(data);
 });
 
 
