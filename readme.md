@@ -128,7 +128,7 @@ At the bottom of the it function we validate the Micosoft SQL Server, MySQL, POs
 
 Here is code that downloads and verifies the download. The downloadFile is not part of cypress but coming from an external npm package "cypress-downloadfile", after installing we have to add it to our custom commands and also our cypress.config.js as this `on('task', {downloadFile})`
 
-
+``` js
     it("Download PDF file",()=>{
         homepage.ResourcesDropdown.click();
         //resourcePage.solutiondbtDownload.click();
@@ -146,11 +146,15 @@ Here is code that downloads and verifies the download. The downloadFile is not p
     })
 
 
-    it.skip("Read PDF file",()=>{
+    it("Read PDF file",()=>{
 
-        cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
-    }
+        //cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
+        cy.pdfReader();
+        
+
+    })
     
+```    
     
 As for Validating the content and number of pages in the PDF, I found a npm package that can help with this `pdf-parse` when executing this in insolation it works perfectly, Here is the code:
 
