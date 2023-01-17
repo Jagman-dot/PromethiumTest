@@ -1,4 +1,4 @@
-class registerpage {
+class registerPage {
 
         
 
@@ -45,4 +45,4 @@ class registerpage {
 
 }
 
-export default registerpage = new registerpage();
+export default registerpage = new registerPage();

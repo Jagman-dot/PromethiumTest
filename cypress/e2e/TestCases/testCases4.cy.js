@@ -22,9 +22,6 @@ describe("Test Case 4", ()=>{
     })
 
     it("Download PDF file",()=>{
-
-       
-       
         homepage.ResourcesDropdown.click();
         //resourcePage.solutiondbtDownload.click();
 
@@ -37,13 +34,17 @@ describe("Test Case 4", ()=>{
         cy.readFile('cypress/downloads/solutiondbt.pdf');
 
         //cy.task('readPdf', 'cypress/downloads/solutiondbt.pdf').should('contain', 'Reimagining data analytics');
-        
-        
-       
-        
+    
     })
 
 
+    it.only("Read PDF file",()=>{
+
+        //cy.task('pdf', "/Users/jagmandeepdhaliwal/Desktop/promethium/cypress/downloads/solutiondbt.pdf")
+        cy.pdfReader();
+        
+
+    })
  
 
 

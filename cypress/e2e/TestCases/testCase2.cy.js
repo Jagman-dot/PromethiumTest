@@ -1,3 +1,5 @@
+
+
 describe("Test Case 2", ()=>{
 
 
@@ -5,7 +7,7 @@ describe("Test Case 2", ()=>{
         cy.visit("https://www.pm61data.com/");
         cy.get('.comp-jixneksf > a').invoke('removeAttr', 'target').click()
         
-        
+    
     })
 
     it("Validate required fields ",()=>{
@@ -38,8 +40,11 @@ describe("Test Case 2", ()=>{
     //results in 409 - conflict as user already exists need to figure out way to make test dynamic
     it("Validate signup process", ()=>{
 
+
         cy.origin('https://onboarding.pm61data.cloud/user/register', () =>{
             
+                
+                
                 cy.get("#UserRegister_root_user").type("jagman.dhaliwal@pm61data.com");
                 cy.get("#UserRegister_first_name").type("jagman");
                 cy.get("#UserRegister_last_name").type("dhaliwal");
@@ -65,6 +70,6 @@ describe("Test Case 2", ()=>{
 
            })
 
-    })
+    }, registerpage)
 
 })

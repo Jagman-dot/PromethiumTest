@@ -3,6 +3,22 @@ require('cypress-downloadfile/lib/downloadFileCommand')
 
 
 
+
+Cypress.Commands.add('pdfReader', () =>{
+    let data = {};
+    cy.exec('node test.js').then((result)=>{
+        data = Object.assign({},result.stdout);
+        cy.log(result.stdout)
+        
+    })
+    console.log(data);
+});
+
+
+
+
+
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

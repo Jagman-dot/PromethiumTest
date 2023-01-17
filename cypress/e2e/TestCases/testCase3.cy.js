@@ -27,6 +27,7 @@ describe("Test Case 3", ()=>{
         //cy.get("#comp-jwtopy710").focus();
         homepage.productDropdown.click()
 
+        cy.url().should('contain', '/promethium-data-connectors');
             
         // 17 images 
 
